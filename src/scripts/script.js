@@ -1,28 +1,24 @@
 /* ============================================================
    BIG BRAIN WAY
-   LIVING LANDING PAGE INTERACTIONS
-   ============================================================ */
-
-
-/* ============================================================
-   01. DOM READY
+   DIGITAL MATURITY INSTAGRAM LANDING PAGE
+   PRODUCTION JAVASCRIPT
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     initScrollReveal();
 
-    initMouseGlow();
+    initCardGlow();
 
-    init3DTilt();
+    initMaturityExperience();
 
-    initMaturityModel();
+    initProblemExperience();
+
+    initStageJourney();
 
     initMagneticButtons();
 
     initBackToTop();
-
-    initMobileStickyCTA();
 
     initForm();
 
@@ -32,13 +28,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ============================================================
+   01. UTILITIES
+   ============================================================ */
+
+const prefersReducedMotion = () =>
+    window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+const isTouchDevice = () =>
+    window.matchMedia(
+        "(hover: none)"
+    ).matches;
+
+
+/* ============================================================
    02. SCROLL REVEAL
    ============================================================ */
 
 function initScrollReveal() {
 
     const elements =
-        document.querySelectorAll(".reveal");
+        document.querySelectorAll(
+            ".reveal"
+        );
+
 
     if (!elements.length) {
         return;
@@ -46,9 +61,8 @@ function initScrollReveal() {
 
 
     if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
+        prefersReducedMotion() ||
+        !("IntersectionObserver" in window)
     ) {
 
         elements.forEach((element) => {
@@ -61,7 +75,7 @@ function initScrollReveal() {
 
     const observer =
         new IntersectionObserver(
-            (entries, observer) => {
+            (entries, observerInstance) => {
 
                 entries.forEach((entry) => {
 
@@ -75,7 +89,7 @@ function initScrollReveal() {
                     );
 
 
-                    observer.unobserve(
+                    observerInstance.unobserve(
                         entry.target
                     );
 
@@ -83,26 +97,34 @@ function initScrollReveal() {
 
             },
             {
-                threshold: 0.12,
-                rootMargin: "0px 0px -45px 0px"
+                threshold: 0.10,
+
+                rootMargin:
+                    "0px 0px -35px 0px"
             }
         );
 
 
     elements.forEach((element) => {
-
         observer.observe(element);
-
     });
 
 }
 
 
 /* ============================================================
-   03. MOUSE LIGHT TRACKING
+   03. CARD LIGHT
    ============================================================ */
 
-function initMouseGlow() {
+function initCardGlow() {
+
+    if (
+        prefersReducedMotion() ||
+        isTouchDevice()
+    ) {
+        return;
+    }
+
 
     const cards =
         document.querySelectorAll(
@@ -111,103 +133,6 @@ function initMouseGlow() {
 
 
     if (!cards.length) {
-        return;
-    }
-
-
-    cards.forEach((card) => {
-
-        card.addEventListener(
-            "pointermove",
-            (event) => {
-
-                const rect =
-                    card.getBoundingClientRect();
-
-
-                const x =
-                    ((event.clientX - rect.left) /
-                        rect.width) *
-                    100;
-
-
-                const y =
-                    ((event.clientY - rect.top) /
-                        rect.height) *
-                    100;
-
-
-                card.style.setProperty(
-                    "--mouse-x",
-                    `${x}%`
-                );
-
-
-                card.style.setProperty(
-                    "--mouse-y",
-                    `${y}%`
-                );
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        card.addEventListener(
-            "pointerleave",
-            () => {
-
-                card.style.setProperty(
-                    "--mouse-x",
-                    "50%"
-                );
-
-
-                card.style.setProperty(
-                    "--mouse-y",
-                    "50%"
-                );
-
-            }
-        );
-
-    });
-
-}
-
-
-/* ============================================================
-   04. 3D TILT
-   ============================================================ */
-
-function init3DTilt() {
-
-    const cards =
-        document.querySelectorAll(
-            "[data-tilt]"
-        );
-
-
-    if (!cards.length) {
-        return;
-    }
-
-
-    const reducedMotion =
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-
-    const touchDevice =
-        window.matchMedia(
-            "(hover: none)"
-        ).matches;
-
-
-    if (reducedMotion || touchDevice) {
         return;
     }
 
@@ -233,41 +158,38 @@ function init3DTilt() {
                             card.getBoundingClientRect();
 
 
+                        if (
+                            !rect.width ||
+                            !rect.height
+                        ) {
+                            return;
+                        }
+
+
                         const x =
-                            event.clientX -
-                            rect.left;
+                            (
+                                (event.clientX - rect.left) /
+                                rect.width
+                            ) * 100;
 
 
                         const y =
-                            event.clientY -
-                            rect.top;
+                            (
+                                (event.clientY - rect.top) /
+                                rect.height
+                            ) * 100;
 
 
-                        const centerX =
-                            rect.width / 2;
+                        card.style.setProperty(
+                            "--mouse-x",
+                            `${x}%`
+                        );
 
 
-                        const centerY =
-                            rect.height / 2;
-
-
-                        const rotateY =
-                            ((x - centerX) /
-                                centerX) *
-                            5;
-
-
-                        const rotateX =
-                            ((centerY - y) /
-                                centerY) *
-                            5;
-
-
-                        card.style.transform =
-                            `perspective(900px)
-                             rotateX(${rotateX}deg)
-                             rotateY(${rotateY}deg)
-                             translateZ(4px)`;
+                        card.style.setProperty(
+                            "--mouse-y",
+                            `${y}%`
+                        );
 
                     });
 
@@ -287,8 +209,16 @@ function init3DTilt() {
                 }
 
 
-                card.style.transform =
-                    "";
+                card.style.setProperty(
+                    "--mouse-x",
+                    "50%"
+                );
+
+
+                card.style.setProperty(
+                    "--mouse-y",
+                    "15%"
+                );
 
             }
         );
@@ -299,25 +229,314 @@ function init3DTilt() {
 
 
 /* ============================================================
-   05. MATURITY MODEL
+   04. MATURITY EXPERIENCE
    ============================================================ */
 
-function initMaturityModel() {
+function initMaturityExperience() {
+
+    const experience =
+        document.querySelector(
+            "[data-maturity-experience]"
+        );
+
+
+    if (!experience) {
+        return;
+    }
+
 
     const rows =
-        document.querySelectorAll(
+        experience.querySelectorAll(
             ".maturity-row"
         );
 
 
     const progress =
-        document.querySelector(
-            ".progress-fill"
+        experience.querySelector(
+            "[data-progress-fill]"
         );
 
 
-    if (!rows.length || !progress) {
+    const status =
+        experience.querySelector(
+            "[data-stage-status]"
+        );
+
+
+    const detailNumber =
+        experience.querySelector(
+            "[data-detail-number]"
+        );
+
+
+    const detailLabel =
+        experience.querySelector(
+            "[data-detail-label]"
+        );
+
+
+    const detailTitle =
+        experience.querySelector(
+            "[data-detail-title]"
+        );
+
+
+    const detailDescription =
+        experience.querySelector(
+            "[data-detail-description]"
+        );
+
+
+    const detailSignal =
+        experience.querySelector(
+            "[data-detail-signal]"
+        );
+
+
+    const detailNext =
+        experience.querySelector(
+            "[data-detail-next]"
+        );
+
+
+    const selectedStageInput =
+        document.querySelector(
+            "#selectedStage"
+        );
+
+
+    if (
+        !rows.length ||
+        !progress
+    ) {
         return;
+    }
+
+
+    const stages = {
+
+        1: {
+
+            label:
+                "MANUAL",
+
+            title:
+                "People are the system.",
+
+            description:
+                "Repetitive work depends heavily on people, spreadsheets and manual handoffs.",
+
+            signal:
+                "\"Someone has to do this manually every time.\"",
+
+            next:
+                "Identify repetitive work worth digitizing."
+
+        },
+
+
+        2: {
+
+            label:
+                "DIGITIZED",
+
+            title:
+                "The tools exist — but they are isolated.",
+
+            description:
+                "Digital tools have replaced some manual work, but information still lives in separate systems.",
+
+            signal:
+                "\"We have software for everything, but nothing talks to each other.\"",
+
+            next:
+                "Find the systems and information that should connect."
+
+        },
+
+
+        3: {
+
+            label:
+                "CONNECTED",
+
+            title:
+                "Your systems start working together.",
+
+            description:
+                "Data can move between systems, reducing duplicate work and improving visibility.",
+
+            signal:
+                "\"Our systems finally share information.\"",
+
+            next:
+                "Identify workflows that can become automated."
+
+        },
+
+
+        4: {
+
+            label:
+                "AUTOMATED",
+
+            title:
+                "Workflows do more of the work.",
+
+            description:
+                "Automation removes repetitive human effort and makes important processes more consistent.",
+
+            signal:
+                "\"The process keeps moving without someone pushing it every time.\"",
+
+            next:
+                "Use reliable workflows as the foundation for intelligence."
+
+        },
+
+
+        5: {
+
+            label:
+                "AI-ENABLED",
+
+            title:
+                "Intelligence becomes part of the operation.",
+
+            description:
+                "AI can help your business predict, decide, personalize and scale what already works.",
+
+            signal:
+                "\"Our data and workflows help us make better decisions.\"",
+
+            next:
+                "Turn operational data into better decisions and measurable growth."
+
+        }
+
+    };
+
+
+    function selectStage(stageNumber) {
+
+        const stage =
+            stages[stageNumber];
+
+
+        if (!stage) {
+            return;
+        }
+
+
+        rows.forEach((row) => {
+
+            const active =
+                Number(
+                    row.dataset.stage
+                ) === stageNumber;
+
+
+            row.classList.toggle(
+                "active",
+                active
+            );
+
+
+            row.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+
+
+            const state =
+                row.querySelector(
+                    "[data-stage-state]"
+                );
+
+
+            if (state) {
+
+                state.textContent =
+                    active
+                        ? "SELECTED"
+                        : "";
+
+            }
+
+        });
+
+
+        progress.style.width =
+            `${stageNumber * 20}%`;
+
+
+        if (status) {
+            status.textContent =
+                stage.label;
+        }
+
+
+        if (detailNumber) {
+            detailNumber.textContent =
+                String(stageNumber)
+                    .padStart(2, "0");
+        }
+
+
+        if (detailLabel) {
+            detailLabel.textContent =
+                stage.label;
+        }
+
+
+        if (detailTitle) {
+            detailTitle.textContent =
+                stage.title;
+        }
+
+
+        if (detailDescription) {
+            detailDescription.textContent =
+                stage.description;
+        }
+
+
+        if (detailSignal) {
+            detailSignal.textContent =
+                stage.signal;
+        }
+
+
+        if (detailNext) {
+            detailNext.textContent =
+                stage.next;
+        }
+
+
+        if (selectedStageInput) {
+
+            selectedStageInput.value =
+                String(stageNumber);
+
+        }
+
+
+        /*
+         * Keep the selection available if the visitor
+         * refreshes the page during the experience.
+         */
+
+        try {
+
+            sessionStorage.setItem(
+                "bbw-selected-stage",
+                String(stageNumber)
+            );
+
+        } catch {
+            // Storage may be unavailable.
+        }
+
     }
 
 
@@ -327,73 +546,532 @@ function initMaturityModel() {
             "click",
             () => {
 
-                const stage =
+                selectStage(
                     Number(
                         row.dataset.stage
-                    );
-
-
-                rows.forEach((item) => {
-
-                    item.classList.remove(
-                        "active"
-                    );
-
-                });
-
-
-                row.classList.add("active");
-
-
-                const percentage =
-                    stage * 20;
-
-
-                progress.style.width =
-                    `${percentage}%`;
-
-
-                rows.forEach((item) => {
-
-                    const state =
-                        item.querySelector(
-                            ".stage-state"
-                        );
-
-
-                    if (state) {
-                        state.remove();
-                    }
-
-                });
-
-
-                const state =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                state.className =
-                    "stage-state";
-
-
-                state.textContent =
-                    "SELECTED";
-
-
-                row.appendChild(state);
+                    )
+                );
 
             }
         );
 
     });
 
+
+    let initialStage = 1;
+
+
+    try {
+
+        const storedStage =
+            Number(
+                sessionStorage.getItem(
+                    "bbw-selected-stage"
+                )
+            );
+
+
+        if (
+            storedStage >= 1 &&
+            storedStage <= 5
+        ) {
+
+            initialStage =
+                storedStage;
+
+        }
+
+    } catch {
+        // Ignore unavailable storage.
+    }
+
+
+    selectStage(initialStage);
+
 }
 
 
 /* ============================================================
-   06. MAGNETIC BUTTONS
+   05. PROBLEM EXPERIENCE
+   ============================================================ */
+
+function initProblemExperience() {
+
+    const experience =
+        document.querySelector(
+            "[data-problem-experience]"
+        );
+
+
+    if (!experience) {
+        return;
+    }
+
+
+    const tabs =
+        experience.querySelectorAll(
+            "[data-problem]"
+        );
+
+
+    const number =
+        experience.querySelector(
+            "[data-problem-number]"
+        );
+
+
+    const title =
+        experience.querySelector(
+            "[data-problem-title]"
+        );
+
+
+    const description =
+        experience.querySelector(
+            "[data-problem-description]"
+        );
+
+
+    const outcome =
+        experience.querySelector(
+            "[data-problem-outcome]"
+        );
+
+
+    const visual =
+        experience.querySelector(
+            "[data-problem-visual]"
+        );
+
+
+    if (!tabs.length) {
+        return;
+    }
+
+
+    const problems = {
+
+        manual: {
+
+            number:
+                "01",
+
+            title:
+                "Too Much Manual Work",
+
+            description:
+                "Repetitive tasks consume time your team should spend on customers, growth and higher-value work.",
+
+            outcome:
+                "Time gets trapped inside repetitive work.",
+
+            nodes:
+                [
+                    "TASK",
+                    "PERSON",
+                    "REPEAT"
+                ]
+
+        },
+
+
+        systems: {
+
+            number:
+                "02",
+
+            title:
+                "Disconnected Systems",
+
+            description:
+                "Your tools collect valuable data, but information stays trapped in separate systems.",
+
+            outcome:
+                "Important information cannot flow where it is needed.",
+
+            nodes:
+                [
+                    "CRM",
+                    "DATA",
+                    "SILOS"
+                ]
+
+        },
+
+
+        decisions: {
+
+            number:
+                "03",
+
+            title:
+                "Slow Decisions",
+
+            description:
+                "Important decisions depend on scattered information, delayed reports and too much guesswork.",
+
+            outcome:
+                "Delayed information creates slower decisions.",
+
+            nodes:
+                [
+                    "DATA",
+                    "REPORT",
+                    "GUESS"
+                ]
+
+        }
+
+    };
+
+
+    function renderVisual(nodes) {
+
+        if (!visual) {
+            return;
+        }
+
+
+        visual.replaceChildren();
+
+
+        nodes.forEach(
+            (node, index) => {
+
+                const nodeElement =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                nodeElement.className =
+                    "flow-node";
+
+
+                if (
+                    index ===
+                    nodes.length - 1
+                ) {
+
+                    nodeElement.classList.add(
+                        "warning-node"
+                    );
+
+                }
+
+
+                nodeElement.textContent =
+                    node;
+
+
+                visual.appendChild(
+                    nodeElement
+                );
+
+
+                if (
+                    index <
+                    nodes.length - 1
+                ) {
+
+                    const line =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    line.className =
+                        "flow-line";
+
+
+                    line.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+
+                    visual.appendChild(
+                        line
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    function selectProblem(key) {
+
+        const problem =
+            problems[key];
+
+
+        if (!problem) {
+            return;
+        }
+
+
+        tabs.forEach((tab) => {
+
+            const active =
+                tab.dataset.problem ===
+                key;
+
+
+            tab.classList.toggle(
+                "active",
+                active
+            );
+
+
+            tab.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+
+        });
+
+
+        if (number) {
+            number.textContent =
+                problem.number;
+        }
+
+
+        if (title) {
+            title.textContent =
+                problem.title;
+        }
+
+
+        if (description) {
+            description.textContent =
+                problem.description;
+        }
+
+
+        if (outcome) {
+            outcome.textContent =
+                problem.outcome;
+        }
+
+
+        renderVisual(
+            problem.nodes
+        );
+
+    }
+
+
+    tabs.forEach((tab) => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                selectProblem(
+                    tab.dataset.problem
+                );
+
+            }
+        );
+
+    });
+
+
+    selectProblem("manual");
+
+}
+
+
+/* ============================================================
+   06. FIVE-STAGE JOURNEY
+   ============================================================ */
+
+function initStageJourney() {
+
+    const journey =
+        document.querySelector(
+            "[data-stage-journey]"
+        );
+
+
+    if (!journey) {
+        return;
+    }
+
+
+    const cards =
+        journey.querySelectorAll(
+            "[data-journey-stage]"
+        );
+
+
+    const number =
+        journey.querySelector(
+            "[data-journey-number]"
+        );
+
+
+    const title =
+        journey.querySelector(
+            "[data-journey-title]"
+        );
+
+
+    const description =
+        journey.querySelector(
+            "[data-journey-description]"
+        );
+
+
+    if (!cards.length) {
+        return;
+    }
+
+
+    const stages = {
+
+        1: {
+
+            title:
+                "People are still holding the system together.",
+
+            description:
+                "Start by identifying repetitive work, manual handoffs and information trapped in spreadsheets."
+
+        },
+
+
+        2: {
+
+            title:
+                "Digital tools exist, but they operate in silos.",
+
+            description:
+                "The next opportunity is to understand where your systems overlap and where information gets stuck."
+
+        },
+
+
+        3: {
+
+            title:
+                "Your systems can finally share information.",
+
+            description:
+                "Once data flows between systems, you can reduce duplicate work and prepare workflows for automation."
+
+        },
+
+
+        4: {
+
+            title:
+                "Reliable workflows reduce repetitive effort.",
+
+            description:
+                "Automation creates consistency and gives your team more capacity for higher-value work."
+
+        },
+
+
+        5: {
+
+            title:
+                "Intelligence can help you predict, decide and scale.",
+
+            description:
+                "AI becomes most useful when it sits on top of reliable processes, connected systems and usable data."
+
+        }
+
+    };
+
+
+    function selectStage(stageNumber) {
+
+        const stage =
+            stages[stageNumber];
+
+
+        if (!stage) {
+            return;
+        }
+
+
+        cards.forEach((card) => {
+
+            const active =
+                Number(
+                    card.dataset.journeyStage
+                ) === stageNumber;
+
+
+            card.classList.toggle(
+                "active",
+                active
+            );
+
+
+            card.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+
+        });
+
+
+        if (number) {
+
+            number.textContent =
+                String(stageNumber)
+                    .padStart(2, "0");
+
+        }
+
+
+        if (title) {
+            title.textContent =
+                stage.title;
+        }
+
+
+        if (description) {
+            description.textContent =
+                stage.description;
+        }
+
+    }
+
+
+    cards.forEach((card) => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                selectStage(
+                    Number(
+                        card.dataset.journeyStage
+                    )
+                );
+
+            }
+        );
+
+    });
+
+
+    selectStage(1);
+
+}
+
+
+/* ============================================================
+   07. MAGNETIC BUTTONS
    ============================================================ */
 
 function initMagneticButtons() {
@@ -404,21 +1082,10 @@ function initMagneticButtons() {
         );
 
 
-    const touchDevice =
-        window.matchMedia(
-            "(hover: none)"
-        ).matches;
-
-
-    const reducedMotion =
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-
     if (
-        touchDevice ||
-        reducedMotion
+        !buttons.length ||
+        prefersReducedMotion() ||
+        isTouchDevice()
     ) {
         return;
     }
@@ -426,36 +1093,49 @@ function initMagneticButtons() {
 
     buttons.forEach((button) => {
 
+        let frame = null;
+
+
         button.addEventListener(
             "pointermove",
             (event) => {
 
-                const rect =
-                    button.getBoundingClientRect();
+                if (frame) {
+                    cancelAnimationFrame(frame);
+                }
 
 
-                const x =
-                    event.clientX -
-                    rect.left -
-                    rect.width / 2;
+                frame =
+                    requestAnimationFrame(() => {
+
+                        const rect =
+                            button.getBoundingClientRect();
 
 
-                const y =
-                    event.clientY -
-                    rect.top -
-                    rect.height / 2;
+                        const x =
+                            event.clientX -
+                            rect.left -
+                            rect.width / 2;
 
 
-                const moveX =
-                    x * 0.10;
+                        const y =
+                            event.clientY -
+                            rect.top -
+                            rect.height / 2;
 
 
-                const moveY =
-                    y * 0.18;
+                        const moveX =
+                            x * .035;
 
 
-                button.style.transform =
-                    `translate(${moveX}px,${moveY}px)`;
+                        const moveY =
+                            y * .05;
+
+
+                        button.style.transform =
+                            `translate(${moveX}px, ${moveY}px)`;
+
+                    });
 
             },
             {
@@ -468,6 +1148,11 @@ function initMagneticButtons() {
             "pointerleave",
             () => {
 
+                if (frame) {
+                    cancelAnimationFrame(frame);
+                }
+
+
                 button.style.transform =
                     "";
 
@@ -480,7 +1165,7 @@ function initMagneticButtons() {
 
 
 /* ============================================================
-   07. BACK TO TOP
+   08. BACK TO TOP
    ============================================================ */
 
 function initBackToTop() {
@@ -496,29 +1181,39 @@ function initBackToTop() {
     }
 
 
-    const updateButton =
-        () => {
+    let ticking = false;
 
-            if (window.scrollY > 650) {
 
-                button.classList.add(
-                    "visible"
-                );
+    function updateButton() {
 
-            } else {
+        button.classList.toggle(
+            "visible",
+            window.scrollY > 750
+        );
 
-                button.classList.remove(
-                    "visible"
-                );
 
-            }
+        ticking = false;
 
-        };
+    }
 
 
     window.addEventListener(
         "scroll",
-        updateButton,
+        () => {
+
+            if (ticking) {
+                return;
+            }
+
+
+            ticking = true;
+
+
+            requestAnimationFrame(
+                updateButton
+            );
+
+        },
         {
             passive: true
         }
@@ -530,8 +1225,14 @@ function initBackToTop() {
         () => {
 
             window.scrollTo({
+
                 top: 0,
-                behavior: "smooth"
+
+                behavior:
+                    prefersReducedMotion()
+                        ? "auto"
+                        : "smooth"
+
             });
 
         }
@@ -544,161 +1245,7 @@ function initBackToTop() {
 
 
 /* ============================================================
-   08. MOBILE STICKY CTA
-   ============================================================ */
-
-function initMobileStickyCTA() {
-
-    if (
-        window.matchMedia(
-            "(min-width: 769px)"
-        ).matches
-    ) {
-        return;
-    }
-
-
-    const hero =
-        document.querySelector(
-            ".ig-hero"
-        );
-
-
-    const checklist =
-        document.querySelector(
-            "#checklist"
-        );
-
-
-    if (!hero || !checklist) {
-        return;
-    }
-
-
-    const sticky =
-        document.createElement(
-            "div"
-        );
-
-
-    sticky.className =
-        "mobile-sticky-cta";
-
-
-    sticky.innerHTML = `
-
-        <div class="mobile-sticky-cta-label">
-
-            <strong>
-                Find Your Digital Stage
-            </strong>
-
-            <small>
-                FREE 5-STAGE CHECKLIST
-            </small>
-
-        </div>
-
-        <a
-            href="#checklist"
-            class="mobile-sticky-cta-button"
-        >
-            GET IT FREE
-        </a>
-
-    `;
-
-
-    document.body.appendChild(
-        sticky
-    );
-
-
-    const observer =
-        new IntersectionObserver(
-            ([entry]) => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    sticky.classList.remove(
-                        "visible"
-                    );
-
-                } else {
-
-                    const checklistRect =
-                        checklist.getBoundingClientRect();
-
-
-                    const checklistVisible =
-                        checklistRect.top <
-                        window.innerHeight &&
-                        checklistRect.bottom >
-                        0;
-
-
-                    if (!checklistVisible) {
-
-                        sticky.classList.add(
-                            "visible"
-                        );
-
-                    } else {
-
-                        sticky.classList.remove(
-                            "visible"
-                        );
-
-                    }
-
-                }
-
-            },
-            {
-                threshold: 0.15
-            }
-        );
-
-
-    observer.observe(hero);
-
-
-    window.addEventListener(
-        "scroll",
-        () => {
-
-            const rect =
-                checklist.getBoundingClientRect();
-
-
-            const checklistVisible =
-                rect.top <
-                window.innerHeight &&
-                rect.bottom >
-                0;
-
-
-            if (checklistVisible) {
-
-                sticky.classList.remove(
-                    "visible"
-                );
-
-            }
-
-        },
-        {
-            passive: true
-        }
-    );
-
-}
-
-
-/* ============================================================
-   09. FORM VALIDATION
+   09. FORM VALIDATION + NETLIFY
    ============================================================ */
 
 function initForm() {
@@ -715,7 +1262,10 @@ function initForm() {
         );
 
 
-    if (!form || !message) {
+    if (
+        !form ||
+        !message
+    ) {
         return;
     }
 
@@ -744,9 +1294,28 @@ function initForm() {
         );
 
 
+    const button =
+        form.querySelector(
+            ".form-button"
+        );
+
+
+    const buttonText =
+        button?.querySelector(
+            "span"
+        );
+
+
+    const selectedStageInput =
+        document.querySelector(
+            "#selectedStage"
+        );
+
+
     function setError(
         group,
-        text
+        input,
+        errorText
     ) {
 
         if (!group) {
@@ -761,6 +1330,12 @@ function initForm() {
 
         group.classList.remove(
             "valid"
+        );
+
+
+        input?.setAttribute(
+            "aria-invalid",
+            "true"
         );
 
 
@@ -772,14 +1347,15 @@ function initForm() {
 
         if (error) {
             error.textContent =
-                text;
+                errorText;
         }
 
     }
 
 
     function setValid(
-        group
+        group,
+        input
     ) {
 
         if (!group) {
@@ -794,6 +1370,12 @@ function initForm() {
 
         group.classList.add(
             "valid"
+        );
+
+
+        input?.setAttribute(
+            "aria-invalid",
+            "false"
         );
 
 
@@ -814,13 +1396,15 @@ function initForm() {
     function validateName() {
 
         const value =
-            nameInput.value.trim();
+            nameInput?.value.trim() ||
+            "";
 
 
         if (!value) {
 
             setError(
                 nameGroup,
+                nameInput,
                 "Please enter your first name."
             );
 
@@ -833,6 +1417,7 @@ function initForm() {
 
             setError(
                 nameGroup,
+                nameInput,
                 "Please enter at least 2 characters."
             );
 
@@ -841,7 +1426,24 @@ function initForm() {
         }
 
 
-        setValid(nameGroup);
+        if (value.length > 60) {
+
+            setError(
+                nameGroup,
+                nameInput,
+                "Please keep your name under 60 characters."
+            );
+
+            return false;
+
+        }
+
+
+        setValid(
+            nameGroup,
+            nameInput
+        );
+
 
         return true;
 
@@ -851,13 +1453,15 @@ function initForm() {
     function validateContact() {
 
         const value =
-            contactInput.value.trim();
+            contactInput?.value.trim() ||
+            "";
 
 
         if (!value) {
 
             setError(
                 contactGroup,
+                contactInput,
                 "Please enter your email or WhatsApp number."
             );
 
@@ -866,24 +1470,34 @@ function initForm() {
         }
 
 
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        /*
+         * Email:
+         * Standard practical browser-side check.
+         */
 
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+
+        /*
+         * Phone:
+         * Allows international formats such as:
+         *
+         * +92 300 1234567
+         * +1 (555) 123-4567
+         * 03001234567
+         */
 
         const phonePattern =
-            /^[+]?[0-9\s()-]{7,20}$/;
+            /^\+?[0-9\s().-]{7,20}$/;
 
 
         const validEmail =
-            emailPattern.test(
-                value
-            );
+            emailPattern.test(value);
 
 
         const validPhone =
-            phonePattern.test(
-                value
-            );
+            phonePattern.test(value);
 
 
         if (
@@ -893,6 +1507,7 @@ function initForm() {
 
             setError(
                 contactGroup,
+                contactInput,
                 "Please enter a valid email or WhatsApp number."
             );
 
@@ -901,51 +1516,59 @@ function initForm() {
         }
 
 
-        setValid(contactGroup);
+        setValid(
+            contactGroup,
+            contactInput
+        );
+
 
         return true;
 
     }
 
 
-    nameInput.addEventListener(
+    nameInput?.addEventListener(
         "blur",
         validateName
     );
 
 
-    contactInput.addEventListener(
+    contactInput?.addEventListener(
         "blur",
         validateContact
     );
 
 
-    nameInput.addEventListener(
+    nameInput?.addEventListener(
         "input",
         () => {
 
             if (
-                nameGroup.classList.contains(
+                nameGroup?.classList.contains(
                     "invalid"
                 )
             ) {
+
                 validateName();
+
             }
 
         }
     );
 
 
-    contactInput.addEventListener(
+    contactInput?.addEventListener(
         "input",
         () => {
 
             if (
-                contactGroup.classList.contains(
+                contactGroup?.classList.contains(
                     "invalid"
                 )
             ) {
+
                 validateContact();
+
             }
 
         }
@@ -961,7 +1584,6 @@ function initForm() {
 
             message.textContent =
                 "";
-
 
             message.className =
                 "form-message";
@@ -983,7 +1605,6 @@ function initForm() {
                 message.textContent =
                     "Please check the highlighted fields.";
 
-
                 message.classList.add(
                     "error"
                 );
@@ -1003,112 +1624,227 @@ function initForm() {
             }
 
 
-            const button =
-                form.querySelector(
-                    ".form-button"
-                );
-
-
-            const originalText =
-                button.querySelector(
-                    "span"
-                )?.textContent;
-
-
-            button.disabled = true;
-
+            /*
+             * Make sure a stage is always sent.
+             */
 
             if (
-                button.querySelector(
-                    "span"
-                )
+                selectedStageInput &&
+                !selectedStageInput.value
             ) {
 
-                button.querySelector(
-                    "span"
-                ).textContent =
-                    "PREPARING YOUR CHECKLIST...";
+                selectedStageInput.value =
+                    "1";
 
             }
 
 
-            /*
-             * This is intentionally a front-end success state.
-             *
-             * Connect your real lead-capture endpoint,
-             * CRM, Formspree, webhook, API, or backend here.
-             */
+            const originalButtonText =
+                buttonText?.textContent ||
+                "GET MY FREE CHECKLIST";
 
 
-            await new Promise(
-                (resolve) =>
-                    setTimeout(
-                        resolve,
-                        900
-                    )
-            );
+            if (button) {
+                button.disabled = true;
+            }
+
+
+            if (buttonText) {
+
+                buttonText.textContent =
+                    "SENDING...";
+
+            }
 
 
             message.textContent =
-                `Thanks, ${nameInput.value.trim()}! Your checklist request has been received.`;
+                "Sending your request...";
 
 
-            message.classList.add(
-                "success"
-            );
+            try {
+
+                const formData =
+                    new FormData(form);
 
 
-            form.reset();
+                /*
+                 * Netlify expects URL-encoded form data
+                 * for this submission approach.
+                 */
+
+                const encoded =
+                    new URLSearchParams(
+                        formData
+                    ).toString();
 
 
-            nameGroup.classList.remove(
-                "valid"
-            );
+                const response =
+                    await fetch(
+                        window.location.pathname,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded"
+                            },
+
+                            body:
+                                encoded
+                        }
+                    );
 
 
-            contactGroup.classList.remove(
-                "valid"
-            );
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Form submission failed: ${response.status}`
+                    );
+
+                }
 
 
-            if (
-                button.querySelector(
-                    "span"
-                )
-            ) {
+                const firstName =
+                    nameInput.value.trim();
 
-                button.querySelector(
-                    "span"
-                ).textContent =
-                    "CHECKLIST REQUESTED";
+
+                message.textContent =
+                    `Thanks, ${firstName}. Your checklist request has been received.`;
+
+
+                message.classList.add(
+                    "success"
+                );
+
+
+                /*
+                 * Clear visible fields after
+                 * successful submission.
+                 */
+
+                form.reset();
+
+
+                nameGroup?.classList.remove(
+                    "valid",
+                    "invalid"
+                );
+
+
+                contactGroup?.classList.remove(
+                    "valid",
+                    "invalid"
+                );
+
+
+                nameInput?.setAttribute(
+                    "aria-invalid",
+                    "false"
+                );
+
+
+                contactInput?.setAttribute(
+                    "aria-invalid",
+                    "false"
+                );
+
+
+                /*
+                 * Keep the stage selected in the
+                 * hidden field after reset.
+                 */
+
+                if (selectedStageInput) {
+
+                    selectedStageInput.value =
+                        selectedStageInput.value ||
+                        "1";
+
+                }
+
+
+                if (buttonText) {
+
+                    buttonText.textContent =
+                        "CHECKLIST REQUESTED";
+
+                }
+
+
+                /*
+                 * Analytics is optional.
+                 * Nothing breaks if gtag isn't installed.
+                 */
+
+                if (
+                    typeof window.gtag ===
+                    "function"
+                ) {
+
+                    window.gtag(
+                        "event",
+                        "checklist_lead",
+                        {
+                            source:
+                                "instagram",
+
+                            selected_stage:
+                                selectedStageInput?.value ||
+                                "1"
+                        }
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Checklist form error:",
+                    error
+                );
+
+
+                message.textContent =
+                    "We couldn't send your request right now. Please try again.";
+
+
+                message.classList.add(
+                    "error"
+                );
+
+            } finally {
+
+                /*
+                 * Do not permanently lock the form
+                 * after an error.
+                 */
+
+                setTimeout(
+                    () => {
+
+                        if (button) {
+                            button.disabled =
+                                false;
+                        }
+
+
+                        if (
+                            buttonText &&
+                            !message.classList.contains(
+                                "success"
+                            )
+                        ) {
+
+                            buttonText.textContent =
+                                originalButtonText;
+
+                        }
+
+                    },
+                    2200
+                );
 
             }
-
-
-            setTimeout(
-                () => {
-
-                    button.disabled =
-                        false;
-
-
-                    if (
-                        button.querySelector(
-                            "span"
-                        )
-                    ) {
-
-                        button.querySelector(
-                            "span"
-                        ).textContent =
-                            originalText ||
-                            "GET MY FREE CHECKLIST";
-
-                    }
-
-                },
-                2500
-            );
 
         }
     );
@@ -1163,8 +1899,15 @@ function initSmoothAnchors() {
 
 
                 target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
+
+                    behavior:
+                        prefersReducedMotion()
+                            ? "auto"
+                            : "smooth",
+
+                    block:
+                        "start"
+
                 });
 
             }
@@ -1173,140 +1916,3 @@ function initSmoothAnchors() {
     });
 
 }
-
-
-/* ============================================================
-   11. SUBTLE HERO POINTER ATMOSPHERE
-   ============================================================ */
-
-(() => {
-
-    const hero =
-        document.querySelector(
-            ".ig-hero"
-        );
-
-
-    if (!hero) {
-        return;
-    }
-
-
-    const reducedMotion =
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-
-    const touchDevice =
-        window.matchMedia(
-            "(hover: none)"
-        ).matches;
-
-
-    if (
-        reducedMotion ||
-        touchDevice
-    ) {
-        return;
-    }
-
-
-    let animationFrame;
-
-
-    hero.addEventListener(
-        "pointermove",
-        (event) => {
-
-            if (animationFrame) {
-                cancelAnimationFrame(
-                    animationFrame
-                );
-            }
-
-
-            animationFrame =
-                requestAnimationFrame(
-                    () => {
-
-                        const rect =
-                            hero.getBoundingClientRect();
-
-
-                        const x =
-                            (event.clientX -
-                                rect.left) /
-                            rect.width;
-
-
-                        const y =
-                            (event.clientY -
-                                rect.top) /
-                            rect.height;
-
-
-                        const moveX =
-                            (x - .5) * 30;
-
-
-                        const moveY =
-                            (y - .5) * 20;
-
-
-                        hero.style.setProperty(
-                            "--hero-mouse-x",
-                            `${moveX}px`
-                        );
-
-
-                        hero.style.setProperty(
-                            "--hero-mouse-y",
-                            `${moveY}px`
-                        );
-
-
-                        const glowOne =
-                            hero.querySelector(
-                                ".hero-glow-one"
-                            );
-
-
-                        const glowTwo =
-                            hero.querySelector(
-                                ".hero-glow-two"
-                            );
-
-
-                        if (glowOne) {
-
-                            glowOne.style.marginLeft =
-                                `${moveX * .35}px`;
-
-                            glowOne.style.marginTop =
-                                `${moveY * .35}px`;
-
-                        }
-
-
-                        if (glowTwo) {
-
-                            glowTwo.style.marginLeft =
-                                `${moveX * -.25}px`;
-
-                            glowTwo.style.marginTop =
-                                `${moveY * -.25}px`;
-
-                        }
-
-                    }
-                );
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-})();
