@@ -1,0 +1,41 @@
+---
+const {
+    title = "Digital Maturity Checklist | Big Brain Way",
+    description = "Discover where your business is today and identify the next steps needed to build a faster, smarter and more scalable operation."
+} = Astro.props;
+---
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta
+        name="description"
+        content={description}
+    />
+
+    <meta
+        name="theme-color"
+        content="#030712"
+    />
+
+    <title>{title}</title>
+
+</head>
+
+<body>
+
+    <slot />
+
+</body>
+
+</html>
