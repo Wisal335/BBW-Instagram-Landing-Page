@@ -1641,7 +1641,7 @@ function initForm() {
 
             const originalButtonText =
                 buttonText?.textContent ||
-                "GET MY FREE CHECKLIST";
+                "GET YOUR FREE CHECKLIST";
 
 
             if (button) {
