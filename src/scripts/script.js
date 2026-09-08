@@ -1678,21 +1678,19 @@ function initForm() {
                     ).toString();
 
 
-                const response =
-                    await fetch(
-                        window.location.pathname,
-                        {
-                            method: "POST",
+                const response = await fetch(
+    form.action || "/",
+    {
+        method: "POST",
 
-                            headers: {
-                                "Content-Type":
-                                    "application/x-www-form-urlencoded"
-                            },
+        headers: {
+            "Content-Type":
+                "application/x-www-form-urlencoded;charset=UTF-8"
+        },
 
-                            body:
-                                encoded
-                        }
-                    );
+        body: new URLSearchParams(formData).toString()
+    }
+);
 
 
                 if (!response.ok) {
