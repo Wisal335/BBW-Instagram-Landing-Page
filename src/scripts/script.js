@@ -5,25 +5,15 @@
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-
     initScrollReveal();
-
     initCardGlow();
-
     initMaturityExperience();
-
     initProblemExperience();
-
     initStageJourney();
-
     initMagneticButtons();
-
     initBackToTop();
-
     initForm();
-
     initSmoothAnchors();
-
 });
 
 
@@ -50,28 +40,22 @@ const isTouchDevice = () =>
 function initScrollReveal() {
 
     const elements =
-        document.querySelectorAll(
-            ".reveal"
-        );
-
+        document.querySelectorAll(".reveal");
 
     if (!elements.length) {
         return;
     }
 
-
     if (
         prefersReducedMotion() ||
         !("IntersectionObserver" in window)
     ) {
-
         elements.forEach((element) => {
             element.classList.add("revealed");
         });
 
         return;
     }
-
 
     const observer =
         new IntersectionObserver(
@@ -83,32 +67,26 @@ function initScrollReveal() {
                         return;
                     }
 
-
                     entry.target.classList.add(
                         "revealed"
                     );
 
-
                     observerInstance.unobserve(
                         entry.target
                     );
-
                 });
 
             },
             {
                 threshold: 0.10,
-
                 rootMargin:
                     "0px 0px -35px 0px"
             }
         );
 
-
     elements.forEach((element) => {
         observer.observe(element);
     });
-
 }
 
 
@@ -125,22 +103,18 @@ function initCardGlow() {
         return;
     }
 
-
     const cards =
         document.querySelectorAll(
             ".interactive-card"
         );
 
-
     if (!cards.length) {
         return;
     }
 
-
     cards.forEach((card) => {
 
         let frame = null;
-
 
         card.addEventListener(
             "pointermove",
@@ -150,13 +124,11 @@ function initCardGlow() {
                     cancelAnimationFrame(frame);
                 }
 
-
                 frame =
                     requestAnimationFrame(() => {
 
                         const rect =
                             card.getBoundingClientRect();
-
 
                         if (
                             !rect.width ||
@@ -165,13 +137,11 @@ function initCardGlow() {
                             return;
                         }
 
-
                         const x =
                             (
                                 (event.clientX - rect.left) /
                                 rect.width
                             ) * 100;
-
 
                         const y =
                             (
@@ -179,26 +149,21 @@ function initCardGlow() {
                                 rect.height
                             ) * 100;
 
-
                         card.style.setProperty(
                             "--mouse-x",
                             `${x}%`
                         );
 
-
                         card.style.setProperty(
                             "--mouse-y",
                             `${y}%`
                         );
-
                     });
-
             },
             {
                 passive: true
             }
         );
-
 
         card.addEventListener(
             "pointerleave",
@@ -208,23 +173,18 @@ function initCardGlow() {
                     cancelAnimationFrame(frame);
                 }
 
-
                 card.style.setProperty(
                     "--mouse-x",
                     "50%"
                 );
 
-
                 card.style.setProperty(
                     "--mouse-y",
                     "15%"
                 );
-
             }
         );
-
     });
-
 }
 
 
@@ -239,71 +199,59 @@ function initMaturityExperience() {
             "[data-maturity-experience]"
         );
 
-
     if (!experience) {
         return;
     }
-
 
     const rows =
         experience.querySelectorAll(
             ".maturity-row"
         );
 
-
     const progress =
         experience.querySelector(
             "[data-progress-fill]"
         );
-
 
     const status =
         experience.querySelector(
             "[data-stage-status]"
         );
 
-
     const detailNumber =
         experience.querySelector(
             "[data-detail-number]"
         );
-
 
     const detailLabel =
         experience.querySelector(
             "[data-detail-label]"
         );
 
-
     const detailTitle =
         experience.querySelector(
             "[data-detail-title]"
         );
-
 
     const detailDescription =
         experience.querySelector(
             "[data-detail-description]"
         );
 
-
     const detailSignal =
         experience.querySelector(
             "[data-detail-signal]"
         );
-
 
     const detailNext =
         experience.querySelector(
             "[data-detail-next]"
         );
 
-
     const selectedStageInput =
         document.querySelector(
             "#selectedStage"
         );
-
 
     if (
         !rows.length ||
@@ -312,108 +260,87 @@ function initMaturityExperience() {
         return;
     }
 
-
     const stages = {
 
         1: {
-
-            label:
-                "MANUAL",
+            label: "MANUAL",
 
             title:
                 "People are the system.",
 
             description:
-                "Repetitive work depends heavily on people, spreadsheets and manual handoffs.",
+                "Work still depends on people, spreadsheets and manual handoffs.",
 
             signal:
                 "\"Someone has to do this manually every time.\"",
 
             next:
-                "Identify repetitive work worth digitizing."
-
+                "Find repetitive work worth digitizing."
         },
 
-
         2: {
-
-            label:
-                "DIGITIZED",
+            label: "DIGITIZED",
 
             title:
                 "The tools exist — but they are isolated.",
 
             description:
-                "Digital tools have replaced some manual work, but information still lives in separate systems.",
+                "Digital tools exist, but information still lives in separate systems.",
 
             signal:
                 "\"We have software for everything, but nothing talks to each other.\"",
 
             next:
                 "Find the systems and information that should connect."
-
         },
 
-
         3: {
-
-            label:
-                "CONNECTED",
+            label: "CONNECTED",
 
             title:
                 "Your systems start working together.",
 
             description:
-                "Data can move between systems, reducing duplicate work and improving visibility.",
+                "Data moves between systems, reducing duplicate work and improving visibility.",
 
             signal:
                 "\"Our systems finally share information.\"",
 
             next:
                 "Identify workflows that can become automated."
-
         },
 
-
         4: {
-
-            label:
-                "AUTOMATED",
+            label: "AUTOMATED",
 
             title:
                 "Workflows do more of the work.",
 
             description:
-                "Automation removes repetitive human effort and makes important processes more consistent.",
+                "Automation removes repetitive effort and makes important processes more consistent.",
 
             signal:
                 "\"The process keeps moving without someone pushing it every time.\"",
 
             next:
                 "Use reliable workflows as the foundation for intelligence."
-
         },
 
-
         5: {
-
-            label:
-                "AI-ENABLED",
+            label: "AI-ENABLED",
 
             title:
                 "Intelligence becomes part of the operation.",
 
             description:
-                "AI can help your business predict, decide, personalize and scale what already works.",
+                "AI helps your business predict, decide, personalize and scale what already works.",
 
             signal:
                 "\"Our data and workflows help us make better decisions.\"",
 
             next:
-                "Turn operational data into better decisions and measurable growth."
-
+                "Turn operational data into better decisions."
         }
-
     };
 
 
@@ -422,121 +349,88 @@ function initMaturityExperience() {
         const stage =
             stages[stageNumber];
 
-
         if (!stage) {
             return;
         }
 
-
         rows.forEach((row) => {
 
             const active =
-                Number(
-                    row.dataset.stage
-                ) === stageNumber;
-
+                Number(row.dataset.stage) ===
+                stageNumber;
 
             row.classList.toggle(
                 "active",
                 active
             );
 
-
             row.setAttribute(
                 "aria-pressed",
                 String(active)
             );
-
 
             const state =
                 row.querySelector(
                     "[data-stage-state]"
                 );
 
-
             if (state) {
-
                 state.textContent =
-                    active
-                        ? "SELECTED"
-                        : "";
-
+                    active ? "SELECTED" : "";
             }
-
         });
-
 
         progress.style.width =
             `${stageNumber * 20}%`;
-
 
         if (status) {
             status.textContent =
                 stage.label;
         }
 
-
         if (detailNumber) {
             detailNumber.textContent =
-                String(stageNumber)
-                    .padStart(2, "0");
+                String(stageNumber).padStart(2, "0");
         }
-
 
         if (detailLabel) {
             detailLabel.textContent =
                 stage.label;
         }
 
-
         if (detailTitle) {
             detailTitle.textContent =
                 stage.title;
         }
-
 
         if (detailDescription) {
             detailDescription.textContent =
                 stage.description;
         }
 
-
         if (detailSignal) {
             detailSignal.textContent =
                 stage.signal;
         }
-
 
         if (detailNext) {
             detailNext.textContent =
                 stage.next;
         }
 
-
         if (selectedStageInput) {
-
             selectedStageInput.value =
                 String(stageNumber);
-
         }
 
-
-        /*
-         * Keep the selection available if the visitor
-         * refreshes the page during the experience.
-         */
-
         try {
-
             sessionStorage.setItem(
                 "bbw-selected-stage",
                 String(stageNumber)
             );
-
         } catch {
             // Storage may be unavailable.
         }
-
     }
 
 
@@ -547,9 +441,7 @@ function initMaturityExperience() {
             () => {
 
                 selectStage(
-                    Number(
-                        row.dataset.stage
-                    )
+                    Number(row.dataset.stage)
                 );
 
             }
@@ -560,7 +452,6 @@ function initMaturityExperience() {
 
     let initialStage = 1;
 
-
     try {
 
         const storedStage =
@@ -570,24 +461,19 @@ function initMaturityExperience() {
                 )
             );
 
-
         if (
             storedStage >= 1 &&
             storedStage <= 5
         ) {
-
             initialStage =
                 storedStage;
-
         }
 
     } catch {
         // Ignore unavailable storage.
     }
 
-
     selectStage(initialStage);
-
 }
 
 
@@ -602,47 +488,39 @@ function initProblemExperience() {
             "[data-problem-experience]"
         );
 
-
     if (!experience) {
         return;
     }
-
 
     const tabs =
         experience.querySelectorAll(
             "[data-problem]"
         );
 
-
     const number =
         experience.querySelector(
             "[data-problem-number]"
         );
-
 
     const title =
         experience.querySelector(
             "[data-problem-title]"
         );
 
-
     const description =
         experience.querySelector(
             "[data-problem-description]"
         );
-
 
     const outcome =
         experience.querySelector(
             "[data-problem-outcome]"
         );
 
-
     const visual =
         experience.querySelector(
             "[data-problem-visual]"
         );
-
 
     if (!tabs.length) {
         return;
@@ -652,33 +530,26 @@ function initProblemExperience() {
     const problems = {
 
         manual: {
-
-            number:
-                "01",
+            number: "01",
 
             title:
                 "Too Much Manual Work",
 
             description:
-                "Repetitive tasks consume time your team should spend on customers, growth and higher-value work.",
+                "Repetitive tasks consume time your team could spend on customers and growth.",
 
             outcome:
                 "Time gets trapped inside repetitive work.",
 
-            nodes:
-                [
-                    "TASK",
-                    "PERSON",
-                    "REPEAT"
-                ]
-
+            nodes: [
+                "TASK",
+                "PERSON",
+                "REPEAT"
+            ]
         },
 
-
         systems: {
-
-            number:
-                "02",
+            number: "02",
 
             title:
                 "Disconnected Systems",
@@ -689,39 +560,31 @@ function initProblemExperience() {
             outcome:
                 "Important information cannot flow where it is needed.",
 
-            nodes:
-                [
-                    "CRM",
-                    "DATA",
-                    "SILOS"
-                ]
-
+            nodes: [
+                "CRM",
+                "DATA",
+                "SILOS"
+            ]
         },
 
-
         decisions: {
-
-            number:
-                "03",
+            number: "03",
 
             title:
                 "Slow Decisions",
 
             description:
-                "Important decisions depend on scattered information, delayed reports and too much guesswork.",
+                "Important decisions depend on scattered information, delayed reports and guesswork.",
 
             outcome:
                 "Delayed information creates slower decisions.",
 
-            nodes:
-                [
-                    "DATA",
-                    "REPORT",
-                    "GUESS"
-                ]
-
+            nodes: [
+                "DATA",
+                "REPORT",
+                "GUESS"
+            ]
         }
-
     };
 
 
@@ -731,9 +594,7 @@ function initProblemExperience() {
             return;
         }
 
-
         visual.replaceChildren();
-
 
         nodes.forEach(
             (node, index) => {
@@ -743,31 +604,24 @@ function initProblemExperience() {
                         "div"
                     );
 
-
                 nodeElement.className =
                     "flow-node";
-
 
                 if (
                     index ===
                     nodes.length - 1
                 ) {
-
                     nodeElement.classList.add(
                         "warning-node"
                     );
-
                 }
-
 
                 nodeElement.textContent =
                     node;
 
-
                 visual.appendChild(
                     nodeElement
                 );
-
 
                 if (
                     index <
@@ -779,26 +633,20 @@ function initProblemExperience() {
                             "div"
                         );
 
-
                     line.className =
                         "flow-line";
-
 
                     line.setAttribute(
                         "aria-hidden",
                         "true"
                     );
 
-
                     visual.appendChild(
                         line
                     );
-
                 }
-
             }
         );
-
     }
 
 
@@ -807,11 +655,9 @@ function initProblemExperience() {
         const problem =
             problems[key];
 
-
         if (!problem) {
             return;
         }
-
 
         tabs.forEach((tab) => {
 
@@ -819,49 +665,40 @@ function initProblemExperience() {
                 tab.dataset.problem ===
                 key;
 
-
             tab.classList.toggle(
                 "active",
                 active
             );
 
-
             tab.setAttribute(
                 "aria-pressed",
                 String(active)
             );
-
         });
-
 
         if (number) {
             number.textContent =
                 problem.number;
         }
 
-
         if (title) {
             title.textContent =
                 problem.title;
         }
-
 
         if (description) {
             description.textContent =
                 problem.description;
         }
 
-
         if (outcome) {
             outcome.textContent =
                 problem.outcome;
         }
 
-
         renderVisual(
             problem.nodes
         );
-
     }
 
 
@@ -880,9 +717,7 @@ function initProblemExperience() {
 
     });
 
-
     selectProblem("manual");
-
 }
 
 
@@ -897,35 +732,29 @@ function initStageJourney() {
             "[data-stage-journey]"
         );
 
-
     if (!journey) {
         return;
     }
-
 
     const cards =
         journey.querySelectorAll(
             "[data-journey-stage]"
         );
 
-
     const number =
         journey.querySelector(
             "[data-journey-number]"
         );
-
 
     const title =
         journey.querySelector(
             "[data-journey-title]"
         );
 
-
     const description =
         journey.querySelector(
             "[data-journey-description]"
         );
-
 
     if (!cards.length) {
         return;
@@ -935,59 +764,44 @@ function initStageJourney() {
     const stages = {
 
         1: {
-
             title:
                 "People are still holding the system together.",
 
             description:
-                "Start by identifying repetitive work, manual handoffs and information trapped in spreadsheets."
-
+                "Start by identifying repetitive work and manual handoffs."
         },
 
-
         2: {
-
             title:
                 "Digital tools exist, but they operate in silos.",
 
             description:
-                "The next opportunity is to understand where your systems overlap and where information gets stuck."
-
+                "Find where systems overlap and where information gets stuck."
         },
 
-
         3: {
-
             title:
                 "Your systems can finally share information.",
 
             description:
-                "Once data flows between systems, you can reduce duplicate work and prepare workflows for automation."
-
+                "Connected data reduces duplicate work and prepares workflows for automation."
         },
 
-
         4: {
-
             title:
                 "Reliable workflows reduce repetitive effort.",
 
             description:
-                "Automation creates consistency and gives your team more capacity for higher-value work."
-
+                "Automation creates consistency and gives your team more capacity."
         },
 
-
         5: {
-
             title:
                 "Intelligence can help you predict, decide and scale.",
 
             description:
-                "AI becomes most useful when it sits on top of reliable processes, connected systems and usable data."
-
+                "AI becomes useful when it sits on reliable processes, connected systems and usable data."
         }
-
     };
 
 
@@ -996,11 +810,9 @@ function initStageJourney() {
         const stage =
             stages[stageNumber];
 
-
         if (!stage) {
             return;
         }
-
 
         cards.forEach((card) => {
 
@@ -1009,41 +821,32 @@ function initStageJourney() {
                     card.dataset.journeyStage
                 ) === stageNumber;
 
-
             card.classList.toggle(
                 "active",
                 active
             );
 
-
             card.setAttribute(
                 "aria-pressed",
                 String(active)
             );
-
         });
 
-
         if (number) {
-
             number.textContent =
                 String(stageNumber)
                     .padStart(2, "0");
-
         }
-
 
         if (title) {
             title.textContent =
                 stage.title;
         }
 
-
         if (description) {
             description.textContent =
                 stage.description;
         }
-
     }
 
 
@@ -1064,9 +867,7 @@ function initStageJourney() {
 
     });
 
-
     selectStage(1);
-
 }
 
 
@@ -1081,7 +882,6 @@ function initMagneticButtons() {
             ".magnetic"
         );
 
-
     if (
         !buttons.length ||
         prefersReducedMotion() ||
@@ -1090,11 +890,9 @@ function initMagneticButtons() {
         return;
     }
 
-
     buttons.forEach((button) => {
 
         let frame = null;
-
 
         button.addEventListener(
             "pointermove",
@@ -1104,45 +902,36 @@ function initMagneticButtons() {
                     cancelAnimationFrame(frame);
                 }
 
-
                 frame =
                     requestAnimationFrame(() => {
 
                         const rect =
                             button.getBoundingClientRect();
 
-
                         const x =
                             event.clientX -
                             rect.left -
                             rect.width / 2;
-
 
                         const y =
                             event.clientY -
                             rect.top -
                             rect.height / 2;
 
-
                         const moveX =
-                            x * .035;
-
+                            x * 0.035;
 
                         const moveY =
-                            y * .05;
-
+                            y * 0.05;
 
                         button.style.transform =
                             `translate(${moveX}px, ${moveY}px)`;
-
                     });
-
             },
             {
                 passive: true
             }
         );
-
 
         button.addEventListener(
             "pointerleave",
@@ -1152,15 +941,11 @@ function initMagneticButtons() {
                     cancelAnimationFrame(frame);
                 }
 
-
                 button.style.transform =
                     "";
-
             }
         );
-
     });
-
 }
 
 
@@ -1175,11 +960,9 @@ function initBackToTop() {
             "#backToTop"
         );
 
-
     if (!button) {
         return;
     }
-
 
     let ticking = false;
 
@@ -1191,9 +974,7 @@ function initBackToTop() {
             window.scrollY > 750
         );
 
-
         ticking = false;
-
     }
 
 
@@ -1205,9 +986,7 @@ function initBackToTop() {
                 return;
             }
 
-
             ticking = true;
-
 
             requestAnimationFrame(
                 updateButton
@@ -1232,15 +1011,12 @@ function initBackToTop() {
                     prefersReducedMotion()
                         ? "auto"
                         : "smooth"
-
             });
 
         }
     );
 
-
     updateButton();
-
 }
 
 
@@ -1255,12 +1031,10 @@ function initForm() {
             "#leadForm"
         );
 
-
     const message =
         document.querySelector(
             "#formMessage"
         );
-
 
     if (
         !form ||
@@ -1275,7 +1049,6 @@ function initForm() {
             "#name"
         );
 
-
     const contactInput =
         document.querySelector(
             "#contact"
@@ -1287,7 +1060,6 @@ function initForm() {
             ".input-group"
         );
 
-
     const contactGroup =
         contactInput?.closest(
             ".input-group"
@@ -1298,7 +1070,6 @@ function initForm() {
         form.querySelector(
             ".form-button"
         );
-
 
     const buttonText =
         button?.querySelector(
@@ -1322,34 +1093,28 @@ function initForm() {
             return;
         }
 
-
         group.classList.add(
             "invalid"
         );
 
-
         group.classList.remove(
             "valid"
         );
-
 
         input?.setAttribute(
             "aria-invalid",
             "true"
         );
 
-
         const error =
             group.querySelector(
                 ".field-error"
             );
 
-
         if (error) {
             error.textContent =
                 errorText;
         }
-
     }
 
 
@@ -1362,34 +1127,28 @@ function initForm() {
             return;
         }
 
-
         group.classList.remove(
             "invalid"
         );
 
-
         group.classList.add(
             "valid"
         );
-
 
         input?.setAttribute(
             "aria-invalid",
             "false"
         );
 
-
         const error =
             group.querySelector(
                 ".field-error"
             );
 
-
         if (error) {
             error.textContent =
                 "";
         }
-
     }
 
 
@@ -1398,7 +1157,6 @@ function initForm() {
         const value =
             nameInput?.value.trim() ||
             "";
-
 
         if (!value) {
 
@@ -1409,7 +1167,6 @@ function initForm() {
             );
 
             return false;
-
         }
 
 
@@ -1422,7 +1179,6 @@ function initForm() {
             );
 
             return false;
-
         }
 
 
@@ -1435,7 +1191,6 @@ function initForm() {
             );
 
             return false;
-
         }
 
 
@@ -1444,9 +1199,7 @@ function initForm() {
             nameInput
         );
 
-
         return true;
-
     }
 
 
@@ -1455,7 +1208,6 @@ function initForm() {
         const value =
             contactInput?.value.trim() ||
             "";
-
 
         if (!value) {
 
@@ -1466,27 +1218,12 @@ function initForm() {
             );
 
             return false;
-
         }
 
-
-        /*
-         * Email:
-         * Standard practical browser-side check.
-         */
 
         const emailPattern =
             /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-
-        /*
-         * Phone:
-         * Allows international formats such as:
-         *
-         * +92 300 1234567
-         * +1 (555) 123-4567
-         * 03001234567
-         */
 
         const phonePattern =
             /^\+?[0-9\s().-]{7,20}$/;
@@ -1494,7 +1231,6 @@ function initForm() {
 
         const validEmail =
             emailPattern.test(value);
-
 
         const validPhone =
             phonePattern.test(value);
@@ -1512,7 +1248,6 @@ function initForm() {
             );
 
             return false;
-
         }
 
 
@@ -1521,9 +1256,7 @@ function initForm() {
             contactInput
         );
 
-
         return true;
-
     }
 
 
@@ -1548,9 +1281,7 @@ function initForm() {
                     "invalid"
                 )
             ) {
-
                 validateName();
-
             }
 
         }
@@ -1566,9 +1297,7 @@ function initForm() {
                     "invalid"
                 )
             ) {
-
                 validateContact();
-
             }
 
         }
@@ -1592,7 +1321,6 @@ function initForm() {
             const validName =
                 validateName();
 
-
             const validContact =
                 validateContact();
 
@@ -1615,18 +1343,11 @@ function initForm() {
                         ".invalid input"
                     );
 
-
                 firstInvalid?.focus();
 
-
                 return;
-
             }
 
-
-            /*
-             * Make sure a stage is always sent.
-             */
 
             if (
                 selectedStageInput &&
@@ -1635,7 +1356,6 @@ function initForm() {
 
                 selectedStageInput.value =
                     "1";
-
             }
 
 
@@ -1650,10 +1370,8 @@ function initForm() {
 
 
             if (buttonText) {
-
                 buttonText.textContent =
                     "SENDING...";
-
             }
 
 
@@ -1668,8 +1386,8 @@ function initForm() {
 
 
                 /*
-                 * Netlify expects URL-encoded form data
-                 * for this submission approach.
+                 * Netlify expects URL-encoded
+                 * form data for this request.
                  */
 
                 const encoded =
@@ -1678,19 +1396,20 @@ function initForm() {
                     ).toString();
 
 
-                const response = await fetch(
-    form.action || "/",
-    {
-        method: "POST",
+                const response =
+                    await fetch(
+                        form.action || "/",
+                        {
+                            method: "POST",
 
-        headers: {
-            "Content-Type":
-                "application/x-www-form-urlencoded;charset=UTF-8"
-        },
+                            headers: {
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded;charset=UTF-8"
+                            },
 
-        body: new URLSearchParams(formData).toString()
-    }
-);
+                            body: encoded
+                        }
+                    );
 
 
                 if (!response.ok) {
@@ -1698,7 +1417,6 @@ function initForm() {
                     throw new Error(
                         `Form submission failed: ${response.status}`
                     );
-
                 }
 
 
@@ -1708,7 +1426,6 @@ function initForm() {
 
                 message.textContent =
                     `Thanks, ${firstName}. Your checklist request has been received.`;
-
 
                 message.classList.add(
                     "success"
@@ -1728,7 +1445,6 @@ function initForm() {
                     "invalid"
                 );
 
-
                 contactGroup?.classList.remove(
                     "valid",
                     "invalid"
@@ -1740,7 +1456,6 @@ function initForm() {
                     "false"
                 );
 
-
                 contactInput?.setAttribute(
                     "aria-invalid",
                     "false"
@@ -1748,16 +1463,14 @@ function initForm() {
 
 
                 /*
-                 * Keep the stage selected in the
-                 * hidden field after reset.
+                 * Restore the selected stage
+                 * after form.reset().
                  */
 
                 if (selectedStageInput) {
 
                     selectedStageInput.value =
-                        selectedStageInput.value ||
                         "1";
-
                 }
 
 
@@ -1765,13 +1478,11 @@ function initForm() {
 
                     buttonText.textContent =
                         "CHECKLIST REQUESTED";
-
                 }
 
 
                 /*
-                 * Analytics is optional.
-                 * Nothing breaks if gtag isn't installed.
+                 * Optional analytics.
                  */
 
                 if (
@@ -1791,8 +1502,8 @@ function initForm() {
                                 "1"
                         }
                     );
-
                 }
+
 
             } catch (error) {
 
@@ -1805,17 +1516,11 @@ function initForm() {
                 message.textContent =
                     "We couldn't send your request right now. Please try again.";
 
-
                 message.classList.add(
                     "error"
                 );
 
             } finally {
-
-                /*
-                 * Do not permanently lock the form
-                 * after an error.
-                 */
 
                 setTimeout(
                     () => {
@@ -1824,7 +1529,6 @@ function initForm() {
                             button.disabled =
                                 false;
                         }
-
 
                         if (
                             buttonText &&
@@ -1835,18 +1539,14 @@ function initForm() {
 
                             buttonText.textContent =
                                 originalButtonText;
-
                         }
 
                     },
                     2200
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -1905,12 +1605,8 @@ function initSmoothAnchors() {
 
                     block:
                         "start"
-
                 });
-
             }
         );
-
     });
-
 }

@@ -2499,34 +2499,7 @@ a {
 
 
 /* ============================================================
-   18. PAGE END
-   ============================================================ */
-
-.page-end {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-
-    padding:
-        28px 20px
-        38px;
-
-    border-top:
-        1px solid
-        rgba(255, 255, 255, .04);
-
-    color:
-        rgba(182, 200, 214, .3);
-
-    font-size: 8px;
-    font-weight: 700;
-
-    letter-spacing: .13em;
-}
-
-
-/* ============================================================
-   19. BACK TO TOP
+   18. BACK TO TOP
    ============================================================ */
 
 .back-to-top {
@@ -2585,7 +2558,7 @@ a {
 
 
 /* ============================================================
-   20. REVEAL
+   19. REVEAL
    ============================================================ */
 
 .reveal {
@@ -2634,7 +2607,7 @@ a {
 
 
 /* ============================================================
-   21. KEYBOARD ACCESSIBILITY
+   20. KEYBOARD ACCESSIBILITY
    ============================================================ */
 
 button:focus-visible,
@@ -2649,7 +2622,7 @@ input:focus-visible {
 
 
 /* ============================================================
-   22. TABLET
+   21. TABLET
    ============================================================ */
 
 @media (max-width: 900px) {
@@ -2677,7 +2650,7 @@ input:focus-visible {
 
 
 /* ============================================================
-   23. MOBILE
+   22. MOBILE
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -3024,16 +2997,6 @@ input:focus-visible {
         min-height: 52px;
     }
 
-
-    .page-end {
-        flex-direction: column;
-
-        align-items: center;
-
-        gap: 7px;
-    }
-
-
     .back-to-top {
         right: 14px;
         bottom: 14px;
@@ -3043,7 +3006,7 @@ input:focus-visible {
 
 
 /* ============================================================
-   24. SMALL PHONES
+   23. SMALL PHONES
    ============================================================ */
 
 @media (max-width: 380px) {
@@ -3094,7 +3057,7 @@ input:focus-visible {
 
 
 /* ============================================================
-   25. REDUCED MOTION
+   24. REDUCED MOTION
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -3118,4 +3081,357 @@ input:focus-visible {
         transform: none;
     }
 
+}
+
+/* ============================================================
+   25. MARKETING PASS — CLEANER FLOW, LIGHTER DARK THEME
+   ============================================================ */
+
+:root {
+    --navy-deep: #071522;
+    --navy: #0b1b2b;
+    --navy-soft: #11263a;
+    --text: #f2f8fc;
+    --muted: #9fb2c2;
+    --muted-light: #c3d1db;
+    --line: rgba(171, 207, 228, .18);
+    --glass: rgba(13, 31, 48, .84);
+    --container: 900px;
+}
+
+body {
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.instagram-page {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(31, 143, 235, .11), transparent 30rem),
+        linear-gradient(180deg, #071522 0%, #091a29 52%, #0a1c2c 100%);
+}
+
+.ambient {
+    opacity: .07;
+}
+
+.brand-mark {
+    padding-top: 22px;
+}
+
+.hero {
+    min-height: auto;
+    padding: 58px 0 78px;
+}
+
+.hero-title {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.hero-lead {
+    margin-bottom: 26px;
+    line-height: 1.55;
+}
+
+.maturity-experience {
+    margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(18, 46, 68, .96), rgba(8, 27, 43, .96));
+}
+
+.primary-cta,
+.form-button {
+    min-height: 56px;
+    padding: 15px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    letter-spacing: .035em;
+}
+
+.primary-cta {
+    gap: 18px;
+}
+
+.micro-proof {
+    margin-top: 13px;
+}
+
+.scroll-cue {
+    margin-top: 42px;
+}
+
+.story-section,
+.journey-section {
+    padding: 92px 0;
+}
+
+.section-heading {
+    max-width: 680px;
+    margin-bottom: 44px;
+}
+
+.section-heading h2,
+.checklist-container h2 {
+    line-height: 1.05;
+    letter-spacing: -.045em;
+}
+
+.section-heading p {
+    max-width: 600px;
+    line-height: 1.55;
+}
+
+.problem-experience,
+.journey-layout {
+    background: rgba(15, 37, 55, .78);
+    border-color: rgba(171, 207, 228, .18);
+}
+
+.problem-copy {
+    padding: 30px;
+}
+
+.problem-copy p,
+.journey-detail p,
+.value-card p {
+    line-height: 1.55;
+}
+
+.journey-track {
+    min-height: 148px;
+}
+
+.journey-card {
+    padding: 18px 14px;
+}
+
+.solution-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.value-card {
+    min-height: 270px;
+    padding: 20px;
+    background: rgba(14, 35, 52, .82);
+}
+
+.value-card h3 {
+    margin-bottom: 8px;
+}
+
+.value-card p {
+    margin-top: 0;
+}
+
+.value-visual {
+    height: 112px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #081a2a;
+}
+
+.value-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.checklist-section {
+    padding: 88px 0 76px;
+    background:
+        linear-gradient(180deg, rgba(10, 28, 44, .96), rgba(7, 20, 33, 1));
+}
+
+.checklist-container {
+    max-width: 760px;
+}
+
+.checklist-container h2 {
+    max-width: 620px;
+    margin-top: 20px;
+    margin-bottom: 14px;
+}
+
+.form-intro {
+    max-width: 570px;
+    margin-bottom: 20px;
+    line-height: 1.55;
+}
+
+.form-benefits {
+    margin-bottom: 24px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-shell {
+    border-color: rgba(171, 207, 228, .22);
+}
+
+.input-shell input {
+    font-family: inherit;
+}
+
+.form-button {
+    margin-top: 4px;
+}
+
+.privacy-text {
+    margin-top: 16px;
+}
+
+.delivery-note {
+    margin-top: 18px;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 42px 0 62px;
+    }
+
+    .hero-title {
+        margin-top: 20px;
+    }
+
+    .story-section,
+    .journey-section {
+        padding: 68px 0;
+    }
+
+    .section-heading {
+        margin-bottom: 30px;
+    }
+
+    .solution-benefits {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .value-card {
+        min-height: 0;
+        padding: 18px;
+    }
+
+    .value-visual {
+        height: 120px;
+        margin-bottom: 14px;
+    }
+
+    .checklist-section {
+        padding: 66px 0 58px;
+    }
+
+    .primary-cta,
+    .form-button {
+        min-height: 54px;
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 380px) {
+    .primary-cta,
+    .form-button {
+        padding-inline: 14px;
+    }
+}
+
+
+/* ============================================================
+   26. FINAL QA PASS — FORMAT ONLY
+   Keeps the existing design; fixes typography, spacing and CTA sizing.
+   ============================================================ */
+
+body,
+button,
+input {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.primary-cta,
+.form-button {
+    box-sizing: border-box;
+    min-height: 56px;
+    padding: 0 24px;
+    line-height: 1.2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
+
+.primary-cta {
+    margin: 18px auto 0;
+}
+
+.form-button {
+    margin-top: 6px;
+}
+
+.primary-cta b,
+.form-button b {
+    font-weight: 400;
+    line-height: 1;
+}
+
+/* Keep the existing navy identity while giving large sections slightly more lift. */
+.instagram-page {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(31, 143, 235, .12), transparent 30rem),
+        linear-gradient(180deg, #071522 0%, #0a1b2b 52%, #0b1e30 100%);
+}
+
+/* The existing GIFs are the interactive visual treatment; keep them aligned. */
+.value-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.value-visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.solution-benefits {
+    align-items: stretch;
+}
+
+.solution-benefits .value-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.solution-benefits .value-card p {
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .primary-cta,
+    .form-button {
+        min-height: 52px;
+        padding: 0 18px;
+        font-size: 11px;
+    }
+
+    .primary-cta {
+        margin-top: 16px;
+    }
+
+    .solution-benefits .value-card {
+        height: auto;
+    }
+}
+
+@media (max-width: 380px) {
+    .primary-cta,
+    .form-button {
+        padding-inline: 14px;
+    }
 }
